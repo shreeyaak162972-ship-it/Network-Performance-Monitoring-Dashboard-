@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FFF9ED">
+  <meta name="description" content="Network performance monitoring dashboard">
+  <title>Overview · NetMonitor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#overview" aria-label="NetMonitor home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M7 23.5 13.3 9l5.2 13 3.2-7 3.3 8.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+          <circle cx="7" cy="23.5" r="2" fill="#65D6B0" />
+          <circle cx="13.3" cy="9" r="2" fill="#70B7FF" />
+          <circle cx="21.7" cy="15" r="2" fill="#B6A2FF" /></svg>
+      </span>
+      <span class="brand-copy"><strong>NetMonitor</strong><small>NETWORK OPERATIONS</small></span>
+    </a>
+
+    <div class="workspace-label">WORKSPACE</div>
+    <nav class="main-nav" aria-label="Main navigation">
+      <button class="nav-link active" data-view="overview" type="button"><span class="nav-icon">◫</span>
+        Overview</button>
+      <button class="nav-link" data-view="devices" type="button"><span class="nav-icon">▤</span> Devices <span
+          class="nav-count" id="nav-device-count">—</span></button>
+      <button class="nav-link" data-view="alerts" type="button"><span class="nav-icon">♧</span> Alerts <span
+          class="nav-count" id="nav-alert-count">—</span></button>
+      <button class="nav-link" data-view="traffic" type="button"><span class="nav-icon">⇄</span> Network
+        traffic</button>
+      <button class="nav-link" data-view="analytics" type="button"><span class="nav-icon">⌁</span> Analytics</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="workspace-label">PREFERENCES</div>
+      <button class="nav-link" data-view="profile" type="button"><span class="nav-icon">♙</span> My profile</button>
+      <button class="nav-link" data-view="settings" type="button"><span class="nav-icon">⚙</span> Settings</button>
+      <div class="sidebar-status"><span class="status-pulse"></span><span><strong>Workspace status</strong><small
+            id="connection-label">Checking status…</small></span></div>
+      <button class="profile-row profile-row-button" data-view="profile" type="button" aria-label="Open my profile">
+        <div class="avatar">{{ (user_name or 'U')[0]|upper }}</div>
+        <div class="profile-copy"><strong>{{ user_name }}</strong><small>Dashboard workspace</small></div>
+        <span class="profile-exit" title="View profile" aria-label="View profile">↗</span>
+      </button>
+      <form class="signout-form" method="POST" action="{{ url_for('logout') }}"
+        onsubmit="return confirm('Are you sure you want to sign out?');">
+        <button class="signout-button" type="submit"><span aria-hidden="true">↪</span> Sign out</button>
+      </form>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <button class="mobile-menu" id="mobile-menu" type="button" aria-label="Open navigation">☰</button>
+      <div class="breadcrumb"><span>Workspace</span><span class="crumb-sep">/</span><strong
+          id="breadcrumb-current">Overview</strong></div>
+      <div class="topbar-actions">
+        <span class="live-indicator"><span></span> LIVE STATUS</span>
+        <span class="topbar-divider"></span>
+        <button class="icon-button" id="refresh-button" type="button" title="Refresh metrics"
+          aria-label="Refresh metrics">↻</button>
+        <div class="topbar-avatar">{{ (user_name or 'U')[0]|upper }}</div>
+      </div>
+    </header>
+
+    <div class="content-wrap">
+      <div class="global-message" id="global-message" role="status" aria-live="polite" hidden></div>
+
+      <section class="view-section active" id="view-overview" data-title="Overview">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">NETWORK OPERATIONS CENTER</p>
+            <h1>Network overview<span class="heading-period">.</span></h1>
+            <p class="page-subtitle">Monitor device health, performance and network activity from one place.</p>
+          </div>
+          <div class="heading-meta"><span class="meta-label">LAST SYNC</span><strong id="last-sync">Not synced
+              yet</strong><span class="sync-dot"></span></div>
+        </div>
+
+        <div class="stat-grid">
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Reporting devices</span><span class="stat-icon blue">▤</span>
+            </div>
+            <div class="stat-value" id="stat-devices">—</div>
+            <div class="stat-foot"><span class="stat-neutral">Devices in workspace</span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Online devices</span><span class="stat-icon green">⌁</span>
+            </div>
+            <div class="stat-value" id="stat-online">—</div>
+            <div class="stat-foot"><span class="stat-neutral">Based on latest status</span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Average CPU</span><span class="stat-icon purple">◴</span>
+            </div>
+            <div class="stat-value" id="stat-cpu">—<small>%</small></div>
+            <div class="stat-foot"><span class="stat-neutral">Across reporting devices</span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Average latency</span><span class="stat-icon amber">↔</span>
+            </div>
+            <div class="stat-value" id="stat-latency">—<small>ms</small></div>
+            <div class="stat-foot"><span class="stat-neutral">Latest readings only</span></div>
+          </article>
+        </div>
+
+        <div class="section-heading">
+          <div>
+            <h2>Device health</h2>
+            <p>Current device health at a glance</p>
+          </div><button class="text-button" data-goto="devices" type="button">View devices <span>→</span></button>
+        </div>
+        <div class="device-grid" id="overview-device-grid">
+          <div class="empty-state wide-empty"><span class="empty-symbol">⌁</span>
+            <h3>Waiting for device metrics</h3>
+            <p>Your monitored devices will appear here.</p>
+          </div>
+        </div>
+
+        <div class="lower-grid">
+          <article class="panel chart-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Network traffic</h2>
+                <p>Latest cumulative transfer counters</p>
+              </div><span class="panel-tag">LIVE SNAPSHOT</span>
+            </div>
+            <div class="traffic-summary" id="overview-traffic">
+              <div class="empty-state"><span class="empty-symbol">⇄</span>
+                <h3>No traffic readings yet</h3>
+                <p>Traffic values will appear when devices report metrics.</p>
+              </div>
+            </div>
+            <div class="panel-footnote">Traffic summary across the devices in your workspace.</div>
+          </article>
+          <article class="panel activity-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Attention required</h2>
+                <p>Threshold checks from current readings</p>
+              </div><button class="mini-link" data-goto="alerts" type="button">All alerts →</button>
+            </div>
+            <div id="overview-alerts">
+              <div class="empty-state compact-empty"><span class="empty-symbol">✓</span>
+                <h3>No active checks</h3>
+                <p>Alerts highlight performance conditions that may need attention.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view-section" id="view-devices" data-title="Devices">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">INVENTORY</p>
+            <h1>Devices</h1>
+            <p class="page-subtitle">Inspect the latest reported status and performance for each device.</p>
+          </div><button class="primary-button" id="devices-refresh" type="button">↻ Refresh devices</button>
+        </div>
+        <div class="filter-bar">
+          <div class="search-box"><span>⌕</span><input id="device-search" type="search"
+              placeholder="Search returned devices…" aria-label="Search devices"></div><label
+            class="filter-select"><span>Status</span><select id="device-status-filter">
+              <option value="all">All statuses</option>
+              <option value="online">Online</option>
+              <option value="offline">Offline / unknown</option>
+            </select></label><span class="result-count" id="device-result-count">No readings</span>
+        </div>
+        <div class="table-panel">
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>DEVICE</th>
+                  <th>STATUS</th>
+                  <th>CPU</th>
+                  <th>MEMORY</th>
+                  <th>LATENCY</th>
+                  <th>PACKET LOSS</th>
+                  <th>LAST REPORT</th>
+                </tr>
+              </thead>
+              <tbody id="devices-table-body">
+                <tr>
+                  <td colspan="7">
+                    <div class="empty-state table-empty"><span class="empty-symbol">▤</span>
+                      <h3>No device readings</h3>
+                      <p>The backend has not returned any devices yet.</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="view-section" id="view-alerts" data-title="Alerts">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">EVENT REVIEW</p>
+            <h1>Alerts</h1>
+            <p class="page-subtitle">Review performance conditions and take action where needed.</p>
+          </div><span class="heading-pill" id="alert-total-pill">0 active checks</span>
+        </div>
+        <div class="alert-rules">
+          <div><span class="rule-dot critical"></span><span><strong>Critical</strong><small>CPU ≥ 90% or packet loss ≥
+                10%</small></span></div>
+          <div><span class="rule-dot warning"></span><span><strong>Warning</strong><small>CPU ≥ 80%, memory ≥ 85% or
+                latency ≥ 150 ms</small></span></div>
+        </div>
+        <div class="table-panel">
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>SEVERITY</th>
+                  <th>DEVICE</th>
+                  <th>CONDITION</th>
+                  <th>OBSERVED VALUE</th>
+                  <th>LAST REPORT</th>
+                </tr>
+              </thead>
+              <tbody id="alerts-table-body">
+                <tr>
+                  <td colspan="5">
+                    <div class="empty-state table-empty"><span class="empty-symbol">✓</span>
+                      <h3>No alerts to show</h3>
+                      <p>No current device readings are available to evaluate.</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="integration-note">These are client-side threshold checks, not persisted alert records. Alert history
+          and acknowledgement need backend support.</p>
+      </section>
+
+      <section class="view-section" id="view-traffic" data-title="Network traffic">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">BANDWIDTH OBSERVABILITY</p>
+            <h1>Network traffic</h1>
+            <p class="page-subtitle">Transfer counters reported by monitored devices.</p>
+          </div><span class="heading-pill">Latest readings</span>
+        </div>
+        <div class="traffic-kpi-grid">
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Total sent</span><span class="stat-icon blue">↑</span></div>
+            <div class="stat-value" id="traffic-total-sent">—<small>MB</small></div>
+            <div class="stat-foot"><span class="stat-neutral">Across returned devices</span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-label">Total received</span><span class="stat-icon green">↓</span>
+            </div>
+            <div class="stat-value" id="traffic-total-recv">—<small>MB</small></div>
+            <div class="stat-foot"><span class="stat-neutral">Across returned devices</span></div>
+          </article>
+        </div>
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <h2>Device transfer counters</h2>
+              <p>Latest data transfer totals reported by monitored devices.</p>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>DEVICE</th>
+                  <th>DATA SENT</th>
+                  <th>DATA RECEIVED</th>
+                  <th>LAST REPORT</th>
+                </tr>
+              </thead>
+              <tbody id="traffic-table-body">
+                <tr>
+                  <td colspan="4">
+                    <div class="empty-state table-empty"><span class="empty-symbol">⇄</span>
+                      <h3>No traffic readings yet</h3>
+                      <p>Traffic totals will appear when devices report transfer activity.</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+      </section>
+
+      <section class="view-section" id="view-analytics" data-title="Analytics">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">PERFORMANCE INSIGHTS</p>
+            <h1>Analytics</h1>
+            <p class="page-subtitle">Review CPU utilisation and network latency trends for the selected time range.</p>
+          </div><label class="filter-select"><span>Time range</span><select id="analytics-range">
+              <option value="1h">Last hour</option>
+              <option value="24h" selected>Last 24 hours</option>
+              <option value="7d">Last 7 days</option>
+              <option value="30d">Last 30 days</option>
+            </select></label>
+        </div>
+        <div class="analytics-grid">
+          <article class="panel analytics-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>CPU utilisation</h2>
+                <p>Historical time series</p>
+              </div>
+            </div>
+            <div class="chart-empty" id="cpu-chart">
+              <div class="chart-placeholder">Preparing demo chart…</div>
+            </div>
+          </article>
+          <article class="panel analytics-panel">
+            <div class="panel-heading">
+              <div>
+                <h2>Latency over time</h2>
+                <p>Historical time series</p>
+              </div>
+            </div>
+            <div class="chart-empty" id="latency-chart">
+              <div class="chart-placeholder">Preparing demo chart…</div>
+            </div>
+          </article>
+        </div>
+
+      </section>
+
+      <section class="view-section" id="view-profile" data-title="My profile">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">ACCOUNT & WORKSPACE</p>
+            <h1>My profile</h1>
+            <p class="page-subtitle">Your signed-in account details and monitoring workspace information.</p>
+          </div>
+          <span class="profile-status-pill"><span></span> Signed in</span>
+        </div>
+
+        <div class="profile-layout">
+          <article class="panel profile-identity-panel">
+            <div class="profile-hero">
+              <div class="profile-large-avatar">{{ (user_name or 'U')[0]|upper }}</div>
+              <div class="profile-hero-copy"><span class="profile-overline">NETMONITOR ACCOUNT</span>
+                <h2>{{ user_name or 'User' }}</h2>
+                <p>{{ session.get('email', 'Email not available') }}</p><span class="profile-member-badge"><span></span>
+                  Workspace member</span>
+              </div>
+            </div>
+            <div class="profile-divider"></div>
+            <div class="profile-detail-list">
+              <div class="profile-detail"><span class="profile-detail-icon">♙</span>
+                <div><small>Full name</small><strong>{{ user_name or 'User' }}</strong></div>
+              </div>
+              <div class="profile-detail"><span class="profile-detail-icon">✉</span>
+                <div><small>Email address</small><strong
+                    class="profile-email-value">{{ session.get('email', 'Email not available') }}</strong></div><button
+                  class="profile-copy-button" id="copy-profile-email" type="button"
+                  data-email="{{ session.get('email', '') }}" title="Copy email address">Copy</button>
+              </div>
+              <div class="profile-detail"><span class="profile-detail-icon">#</span>
+                <div><small>Account ID</small><strong>{{ session.get('user_id', 'Unavailable') }}</strong></div>
+              </div>
+              <div class="profile-detail"><span class="profile-detail-icon">◉</span>
+                <div><small>Account status</small><strong class="profile-active-value">Active session</strong></div>
+              </div>
+            </div>
+            <p class="profile-note">Your account details are loaded from the current Flask login session. To change your
+              name or email, a secure backend profile-update feature must be added first.</p>
+          </article>
+
+          <div class="profile-side-column">
+            <article class="panel profile-info-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Workspace overview</h2>
+                  <p>Workspace overview</p>
+                </div><span class="profile-card-icon">⌘</span>
+              </div>
+              <div class="profile-workspace-item"><span>Workspace</span><strong>NetMonitor · Network Operations</strong>
+              </div>
+              <div class="profile-workspace-item"><span>Monitoring</span><strong>Device health
+                  overview</strong><small>Review status and performance metrics</small></div>
+              <div class="profile-workspace-item"><span>Data refresh</span><strong id="profile-refresh-value">Every 10
+                  seconds</strong><small>Change this in Settings</small></div>
+              <div class="profile-workspace-item"><span>Performance insights</span><strong>CPU and latency
+                  trends</strong><small>Use the time range selector to explore</small></div>
+            </article>
+            <article class="panel profile-shortcuts-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Quick actions</h2>
+                  <p>Manage your monitoring workspace</p>
+                </div>
+              </div>
+              <button class="profile-shortcut" data-goto="settings" type="button"><span
+                  class="shortcut-icon">⚙</span><span><strong>Dashboard settings</strong><small>Refresh interval and
+                    display preferences</small></span><span class="shortcut-arrow">→</span></button>
+              <button class="profile-shortcut" data-goto="devices" type="button"><span
+                  class="shortcut-icon">▤</span><span><strong>View monitored devices</strong><small>Inspect latest
+                    device metrics</small></span><span class="shortcut-arrow">→</span></button>
+              <button class="profile-shortcut" data-goto="analytics" type="button"><span
+                  class="shortcut-icon">⌁</span><span><strong>Open analytics</strong><small>Review available
+                    charts</small></span><span class="shortcut-arrow">→</span></button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="view-section" id="view-settings" data-title="Settings">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">YOUR WORKSPACE</p>
+            <h1>Settings</h1>
+            <p class="page-subtitle">Personalise how your workspace looks and updates.</p>
+          </div>
+        </div>
+        <div class="settings-layout">
+          <article class="panel settings-panel">
+            <div class="settings-section-heading">
+              <div>
+                <h2>Dashboard preferences</h2>
+                <p>These preferences apply in this browser only.</p>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div><strong>Auto-refresh interval</strong>
+                <p>Choose how often the dashboard refreshes.</p>
+              </div><select id="refresh-interval">
+                <option value="5">Every 5 seconds</option>
+                <option value="10" selected>Every 10 seconds</option>
+                <option value="30">Every 30 seconds</option>
+                <option value="60">Every minute</option>
+              </select>
+            </div>
+            <div class="setting-row">
+              <div><strong>Compact device cards</strong>
+                <p>Reduce spacing in the device overview.</p>
+              </div><label class="switch"><input type="checkbox" id="compact-toggle"><span></span></label>
+            </div>
+            <div class="setting-row">
+              <div><strong>Dark interface</strong>
+                <p>Switch to a darker dashboard appearance.</p>
+              </div><label class="switch"><input type="checkbox" id="theme-toggle"><span></span></label>
+            </div>
+            <div class="settings-actions"><button class="primary-button" id="save-settings" type="button">Apply
+                preferences</button><span id="settings-feedback" role="status"></span></div>
+          </article>
+          <article class="panel settings-panel">
+            <div class="settings-section-heading">
+              <div>
+                <h2>Alert thresholds</h2>
+                <p>Conditions that draw attention to possible performance issues.</p>
+              </div>
+            </div>
+            <div class="integration-list">
+              <div><span>CPU usage</span><code>Warning at 80%</code><b class="integration-muted">Warning</b></div>
+              <div><span>CPU usage</span><code>Critical at 90%</code><b class="integration-muted">Critical</b></div>
+              <div><span>Memory usage</span><code>Warning at 85%</code><b class="integration-muted">Warning</b></div>
+              <div><span>Network latency</span><code>Warning at 150 ms</code><b class="integration-muted">Warning</b>
+              </div>
+              <div><span>Packet loss</span><code>Critical at 10%</code><b class="integration-muted">Critical</b></div>
+            </div>
+          </article>
+        </div>
+      </section>
+      <footer class="app-footer"><span>NetMonitor <span class="footer-separator">·</span> Network performance
+          monitoring</span><span id="footer-api-status">Workspace ready</span></footer>
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — NetMonitor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <div class="auth-layout" style="align-items: center; justify-content: center; padding: 24px;">
+    <main class="form-panel" style="width: min(100%, 760px);">
+      <div class="card" style="width: 100%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <h1 class="card-heading">Welcome, {{ user_name }}!</h1>
+          <a href="{{ url_for('login') }}" style="font-size: 0.85rem; color: var(--blue); text-decoration: none; font-weight: 600;">Sign Out</a>
+        </div>
+        <p class="card-subheading">Network Performance Monitoring Dashboard</p>
+        <div class="heading-accent" aria-hidden="true">
+          <span class="accent-blue"></span>
+          <span class="accent-yellow"></span>
+        </div>
+
+        <!-- Notification / Error alert if API fetch fails -->
+        <div id="metrics-alert" style="display: none; padding: 10px 14px; margin-bottom: 16px; border-radius: var(--radius); background: var(--error-bg); border: 1px solid var(--error-border); color: var(--error-text); font-size: 0.84rem;"></div>
+
+        <!-- PC-01 Metrics Section -->
+        <div style="background: var(--cream-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 18px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div>
+              <h2 id="pc01-device_name" style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark);">PC-01</h2>
+              <div id="pc01-device_type" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Simulated PC</div>
+            </div>
+            <span id="pc01-status" style="font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; background: var(--border); color: var(--text-dark);">Checking...</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 16px;">
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">CPU Usage</div>
+              <div id="pc01-cpu_usage" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Memory Usage</div>
+              <div id="pc01-memory_usage" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Latency</div>
+              <div id="pc01-latency_ms" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- ms</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Packet Loss</div>
+              <div id="pc01-packet_loss" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Data Sent</div>
+              <div id="pc01-net_sent_mb" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- MB</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Data Received</div>
+              <div id="pc01-net_recv_mb" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- MB</div>
+            </div>
+          </div>
+
+          <div style="font-size: 0.75rem; color: var(--text-muted);">
+            Last updated: <span id="pc01-timestamp">--</span>
+          </div>
+        </div>
+
+        <!-- PC-02 Metrics Section -->
+        <div style="background: var(--cream-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 18px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div>
+              <h2 id="pc02-device_name" style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark);">PC-02</h2>
+              <div id="pc02-device_type" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Simulated PC</div>
+            </div>
+            <span id="pc02-status" style="font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; background: var(--border); color: var(--text-dark);">Checking...</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 16px;">
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">CPU Usage</div>
+              <div id="pc02-cpu_usage" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Memory Usage</div>
+              <div id="pc02-memory_usage" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Latency</div>
+              <div id="pc02-latency_ms" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- ms</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Packet Loss</div>
+              <div id="pc02-packet_loss" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Data Sent</div>
+              <div id="pc02-net_sent_mb" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- MB</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Data Received</div>
+              <div id="pc02-net_recv_mb" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- MB</div>
+            </div>
+          </div>
+
+          <div style="font-size: 0.75rem; color: var(--text-muted);">
+            Last updated: <span id="pc02-timestamp">--</span>
+          </div>
+        </div>
+
+        <!-- PC-03 Metrics Section -->
+        <div style="background: var(--cream-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div>
+              <h2 id="pc03-device_name" style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark);">PC-03</h2>
+              <div id="pc03-device_type" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Simulated PC</div>
+            </div>
+            <span id="pc03-status" style="font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; background: var(--border); color: var(--text-dark);">Checking...</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 16px;">
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">CPU Usage</div>
+              <div id="pc03-cpu_usage" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Memory Usage</div>
+              <div id="pc03-memory_usage" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Latency</div>
+              <div id="pc03-latency_ms" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- ms</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Packet Loss</div>
+              <div id="pc03-packet_loss" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Data Sent</div>
+              <div id="pc03-net_sent_mb" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- MB</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Data Received</div>
+              <div id="pc03-net_recv_mb" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- MB</div>
+            </div>
+          </div>
+
+          <div style="font-size: 0.75rem; color: var(--text-muted);">
+            Last updated: <span id="pc03-timestamp">--</span>
+          </div>
+        </div>
+
+        <!-- PC-04 Metrics Section -->
+        <div style="background: var(--cream-alt); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div>
+              <h2 id="pc04-device_name" style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark);">PC-04</h2>
+              <div id="pc04-device_type" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Simulated PC</div>
+            </div>
+            <span id="pc04-status" style="font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; background: var(--border); color: var(--text-dark);">Checking...</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 16px;">
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">CPU Usage</div>
+              <div id="pc04-cpu_usage" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Memory Usage</div>
+              <div id="pc04-memory_usage" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Latency</div>
+              <div id="pc04-latency_ms" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- ms</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Packet Loss</div>
+              <div id="pc04-packet_loss" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- %</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Data Sent</div>
+              <div id="pc04-net_sent_mb" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- MB</div>
+            </div>
+
+            <div style="background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Data Received</div>
+              <div id="pc04-net_recv_mb" style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-top: 4px;">-- MB</div>
+            </div>
+          </div>
+
+          <div style="font-size: 0.75rem; color: var(--text-muted);">
+            Last updated: <span id="pc04-timestamp">--</span>
+          </div>
+        </div>
+
+      </div>
+      <p class="footer-note" style="margin-top: 20px;">BSc IT Project · Network Performance Monitoring Dashboard</p>
+    </main>
+  </div>
+
+  <script>
+    // Helper function to update one device's UI elements
+    function renderDeviceMetrics(prefix, data) {
+      if (!data) return;
+
+      document.getElementById(`${prefix}-device_name`).innerText = data.device_name || '--';
+      document.getElementById(`${prefix}-device_type`).innerText = data.device_type || 'Simulated PC';
+      document.getElementById(`${prefix}-cpu_usage`).innerText = data.cpu_usage != null ? `${data.cpu_usage} %` : '-- %';
+      document.getElementById(`${prefix}-memory_usage`).innerText = data.memory_usage != null ? `${data.memory_usage} %` : '-- %';
+      document.getElementById(`${prefix}-latency_ms`).innerText = data.latency_ms != null ? `${data.latency_ms} ms` : '-- ms';
+      document.getElementById(`${prefix}-packet_loss`).innerText = data.packet_loss != null ? `${data.packet_loss} %` : '-- %';
+      document.getElementById(`${prefix}-net_sent_mb`).innerText = data.net_sent_mb != null ? `${data.net_sent_mb} MB` : '-- MB';
+      document.getElementById(`${prefix}-net_recv_mb`).innerText = data.net_recv_mb != null ? `${data.net_recv_mb} MB` : '-- MB';
+      document.getElementById(`${prefix}-timestamp`).innerText = data.timestamp || '--';
+
+      const statusElem = document.getElementById(`${prefix}-status`);
+      statusElem.innerText = data.status || 'Unknown';
+      if (data.status === 'Online') {
+        statusElem.style.background = 'var(--mint)';
+        statusElem.style.color = '#166534';
+      } else {
+        statusElem.style.background = 'var(--error-bg)';
+        statusElem.style.color = 'var(--error-text)';
+      }
+    }
+
+    // Fetch the latest metrics for PC-01, PC-02, PC-03, and PC-04
+    async function updateAllDevicesMetrics() {
+      const alertBox = document.getElementById('metrics-alert');
+      try {
+        const response = await fetch('/api/devices/latest');
+
+        if (!response.ok) {
+          alertBox.innerText = `Error retrieving metrics (HTTP ${response.status}).`;
+          alertBox.style.display = 'block';
+          return;
+        }
+
+        const devices = await response.json();
+        let foundPC01 = false;
+        let foundPC02 = false;
+        let foundPC03 = false;
+        let foundPC04 = false;
+
+        devices.forEach(device => {
+          if (device.device_name === 'PC-01') {
+            renderDeviceMetrics('pc01', device);
+            foundPC01 = true;
+          } else if (device.device_name === 'PC-02') {
+            renderDeviceMetrics('pc02', device);
+            foundPC02 = true;
+          } else if (device.device_name === 'PC-03') {
+            renderDeviceMetrics('pc03', device);
+            foundPC03 = true;
+          } else if (device.device_name === 'PC-04') {
+            renderDeviceMetrics('pc04', device);
+            foundPC04 = true;
+          }
+        });
+
+        // If a device hasn't reported data yet, show status indicator
+        if (!foundPC01 || !foundPC02 || !foundPC03 || !foundPC04) {
+          const missing = [];
+          if (!foundPC01) missing.push('PC-01');
+          if (!foundPC02) missing.push('PC-02');
+          if (!foundPC03) missing.push('PC-03');
+          if (!foundPC04) missing.push('PC-04');
+          alertBox.innerText = `Waiting for data from: ${missing.join(', ')}.`;
+          alertBox.style.display = 'block';
+        } else {
+          alertBox.style.display = 'none';
+        }
+      } catch (err) {
+        alertBox.innerText = 'Unable to connect to monitoring API. Retrying...';
+        alertBox.style.display = 'block';
+      }
+    }
+
+    // Run immediately on page load and poll every 5 seconds
+    updateAllDevicesMetrics();
+    setInterval(updateAllDevicesMetrics, 5000);
+  </script>
+</body>
+</html>

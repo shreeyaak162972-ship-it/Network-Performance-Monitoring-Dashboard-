@@ -1,0 +1,88 @@
+services:
+
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: network_monitoring
+      DB_USER: postgres
+      DB_PASSWORD: samir123
+    restart: unless-stopped
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: network_monitoring
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: samir123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d network_monitoring"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------
+  # PC-01 — simulated monitoring device
+  # Sends monitoring metrics to http://web:5000/api/metrics
+  # ---------------------------------------------------------------
+  monitor-pc-01:
+    build:
+      context: ./devices/pc01
+      dockerfile: Dockerfile
+    container_name: monitor-pc-01
+    depends_on:
+      - web
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------
+  # PC-02 — simulated monitoring device
+  # Sends monitoring metrics to http://web:5000/api/metrics
+  # ---------------------------------------------------------------
+  monitor-pc-02:
+    build:
+      context: ./devices/pc02
+      dockerfile: Dockerfile
+    container_name: monitor-pc-02
+    depends_on:
+      - web
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------
+  # PC-03 — simulated monitoring device
+  # Sends monitoring metrics to http://web:5000/api/metrics
+  # ---------------------------------------------------------------
+  monitor-pc-03:
+    build:
+      context: ./devices/pc03
+      dockerfile: Dockerfile
+    container_name: monitor-pc-03
+    depends_on:
+      - web
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------
+  # PC-04 — simulated monitoring device
+  # Sends monitoring metrics to http://web:5000/api/metrics
+  # ---------------------------------------------------------------
+  monitor-pc-04:
+    build:
+      context: ./devices/pc04
+      dockerfile: Dockerfile
+    container_name: monitor-pc-04
+    depends_on:
+      - web
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

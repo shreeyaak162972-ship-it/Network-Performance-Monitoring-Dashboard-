@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Create your account for the Network Performance Monitoring Dashboard." />
+  <title>Register — NetMonitor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+  <div class="auth-layout">
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         BACKGROUND DECORATIONS (Framing the centered form)
+    ═══════════════════════════════════════════════════════════════════ -->
+    <div class="auth-decor-frame" aria-hidden="true">
+
+      <!-- LEFT FLANK -->
+      <div class="decor-flank decor-flank-left">
+
+        <!-- 1. Network Topology Nodes -->
+        <div class="decor-item anim-float-1" style="transform-origin: center center;">
+          <svg class="decor-svg" viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Interconnecting lines -->
+            <line x1="95" y1="68" x2="38" y2="34" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="95" y1="68" x2="162" y2="36" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="95" y1="68" x2="44" y2="108" stroke="#171717" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 4"/>
+            <line x1="95" y1="68" x2="152" y2="108" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            
+            <!-- Central Node Hub with signal ring -->
+            <circle cx="95" cy="68" r="32" stroke="#BFA7F2" stroke-width="1.8" stroke-dasharray="4 4" fill="none" opacity="0.75"/>
+            <circle cx="99" cy="72" r="22" fill="#171717"/>
+            <circle cx="95" cy="68" r="22" fill="#BFA7F2" stroke="#171717" stroke-width="2.5"/>
+            <circle cx="95" cy="68" r="10" fill="#FFFFFF" stroke="#171717" stroke-width="2"/>
+            <circle cx="95" cy="68" r="4" fill="#6BB8F5"/>
+
+            <!-- Satellite Node: Top-Left (Bright Blue) -->
+            <circle cx="41" cy="37" r="15" fill="#171717"/>
+            <circle cx="38" cy="34" r="15" fill="#6BB8F5" stroke="#171717" stroke-width="2.2"/>
+            <circle cx="38" cy="34" r="5" fill="#FFFFFF" stroke="#171717" stroke-width="1.5"/>
+
+            <!-- Satellite Node: Top-Right (Warm Yellow) -->
+            <circle cx="165" cy="39" r="16" fill="#171717"/>
+            <circle cx="162" cy="36" r="16" fill="#FFD86A" stroke="#171717" stroke-width="2.2"/>
+            <circle cx="162" cy="36" r="5.5" fill="#FFFFFF" stroke="#171717" stroke-width="1.5"/>
+
+            <!-- Satellite Node: Bottom-Left (Soft Pink) -->
+            <circle cx="46" cy="110" r="14" fill="#171717"/>
+            <circle cx="44" cy="108" r="14" fill="#F7A8C4" stroke="#171717" stroke-width="2.2"/>
+            <circle cx="44" cy="108" r="4.5" fill="#171717"/>
+
+            <!-- Satellite Node: Bottom-Right (Mint Green) -->
+            <circle cx="154" cy="110" r="13" fill="#171717"/>
+            <circle cx="152" cy="108" r="13" fill="#B8F0D8" stroke="#171717" stroke-width="2.2"/>
+            <circle cx="152" cy="108" r="4" fill="#FFFFFF"/>
+
+            <!-- Mini packet dots travelling on lines -->
+            <circle cx="68" cy="52" r="3.5" fill="#FFD86A" stroke="#171717" stroke-width="1.2"/>
+            <circle cx="130" cy="51" r="3.5" fill="#F7A8C4" stroke="#171717" stroke-width="1.2"/>
+          </svg>
+        </div>
+
+        <!-- 2. Playful Neobrutalist Laptop -->
+        <div class="decor-item anim-float-2" style="margin: 12px 0 12px 10px;">
+          <svg class="decor-svg" viewBox="0 0 190 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Screen Drop Shadow -->
+            <rect x="29" y="15" width="134" height="84" rx="10" fill="#171717"/>
+            <!-- Laptop Screen Case -->
+            <rect x="25" y="11" width="134" height="84" rx="10" fill="#FFFFFF" stroke="#171717" stroke-width="2.5"/>
+            <!-- Screen Display Area -->
+            <rect x="33" y="19" width="118" height="68" rx="6" fill="#6BB8F5" stroke="#171717" stroke-width="2"/>
+            
+            <!-- Window Header Dots -->
+            <circle cx="43" cy="27" r="3" fill="#F7A8C4" stroke="#171717" stroke-width="1.2"/>
+            <circle cx="51" cy="27" r="3" fill="#FFD86A" stroke="#171717" stroke-width="1.2"/>
+            <circle cx="59" cy="27" r="3" fill="#B8F0D8" stroke="#171717" stroke-width="1.2"/>
+            
+            <!-- Mini Latency Waveform Graph inside laptop -->
+            <path d="M38 60 L50 60 L56 42 L64 70 L72 48 L80 60 L94 60 L100 44 L108 60 L122 60 L128 50 L136 60 L144 60" 
+                  stroke="#171717" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            
+            <!-- Live Ping Badge on screen -->
+            <rect x="88" y="24" width="56" height="14" rx="4" fill="#FFF7E8" stroke="#171717" stroke-width="1.5"/>
+            <text x="94" y="34" font-family="'Inter', sans-serif" font-size="7.5" font-weight="800" fill="#171717">PING 12ms</text>
+            
+            <!-- Laptop Keyboard Base (Perspective) -->
+            <polygon points="12,95 172,95 156,118 28,118" fill="#171717"/>
+            <polygon points="10,92 170,92 154,115 26,115" fill="#FFD86A" stroke="#171717" stroke-width="2.5"/>
+            <!-- Trackpad -->
+            <rect x="76" y="99" width="28" height="11" rx="3" fill="#FFFFFF" stroke="#171717" stroke-width="1.8"/>
+          </svg>
+        </div>
+
+        <!-- 3. WiFi Symbol Badge & Signal Indicator -->
+        <div class="decor-item anim-float-3" style="margin-left: 5px;">
+          <svg class="decor-svg" viewBox="0 0 160 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Shadow -->
+            <rect x="22" y="16" width="118" height="88" rx="14" fill="#171717"/>
+            <!-- Badge Card -->
+            <rect x="18" y="12" width="118" height="88" rx="14" fill="#BFA7F2" stroke="#171717" stroke-width="2.5"/>
+            
+            <!-- Concentric WiFi Arcs -->
+            <path d="M46 44 C56 34 82 34 94 44" stroke="#171717" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M55 56 C62 49 78 49 85 56" stroke="#171717" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M64 68 C67 65 73 65 76 68" stroke="#171717" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="70" cy="79" r="4.5" fill="#FFD86A" stroke="#171717" stroke-width="2.2"/>
+            
+            <!-- Tag: Active WiFi -->
+            <rect x="76" y="18" width="52" height="17" rx="8" fill="#F7A8C4" stroke="#171717" stroke-width="1.8"/>
+            <text x="82" y="30" font-family="'Inter', sans-serif" font-size="7.5" font-weight="800" fill="#171717">WIFI 6</text>
+          </svg>
+        </div>
+
+        <!-- Small Floating Doodles (Left) -->
+        <span class="decor-doodle decor-doodle-sparkle anim-sparkle" style="top: 8%; right: -15px; font-size: 26px;">✦</span>
+        <span class="decor-doodle decor-doodle-plus" style="top: 38%; left: 8px;">+</span>
+        <span class="decor-doodle decor-doodle-plus" style="bottom: 12%; right: -12px; font-size: 20px;">+</span>
+        <div class="decor-doodle decor-doodle-ring" style="width: 14px; height: 14px; top: 68%; left: -6px; background: #FFD86A;"></div>
+
+      </div><!-- /.decor-flank-left -->
+
+
+      <!-- RIGHT FLANK -->
+      <div class="decor-flank decor-flank-right">
+
+        <!-- 1. Analytics Bar Chart Card -->
+        <div class="decor-item anim-float-2">
+          <svg class="decor-svg" viewBox="0 0 195 145" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Card Drop Shadow -->
+            <rect x="18" y="16" width="162" height="116" rx="14" fill="#171717"/>
+            <!-- Card Body -->
+            <rect x="14" y="12" width="162" height="116" rx="14" fill="#FFFFFF" stroke="#171717" stroke-width="2.5"/>
+            
+            <!-- Card Header -->
+            <circle cx="28" cy="28" r="4.5" fill="#6BB8F5" stroke="#171717" stroke-width="1.5"/>
+            <text x="38" y="31" font-family="'Inter', sans-serif" font-size="8.5" font-weight="800" fill="#171717">QOS METRICS</text>
+            <!-- 99.9% Uptime pill -->
+            <rect x="110" y="21" width="56" height="16" rx="6" fill="#B8F0D8" stroke="#171717" stroke-width="1.8"/>
+            <text x="116" y="32" font-family="'Inter', sans-serif" font-size="7.5" font-weight="800" fill="#171717">99.9% UP</text>
+            
+            <!-- Horizontal Baseline -->
+            <line x1="26" y1="104" x2="164" y2="104" stroke="#171717" stroke-width="2" stroke-linecap="round"/>
+            <line x1="26" y1="74" x2="164" y2="74" stroke="#E2E2EA" stroke-width="1.5" stroke-dasharray="3 3"/>
+            
+            <!-- 4 Colorful Neobrutalist Bars -->
+            <!-- Bar 1: Pink -->
+            <rect x="34" y="74" width="22" height="30" rx="4" fill="#F7A8C4" stroke="#171717" stroke-width="2"/>
+            <!-- Bar 2: Lavender -->
+            <rect x="66" y="56" width="22" height="48" rx="4" fill="#BFA7F2" stroke="#171717" stroke-width="2"/>
+            <!-- Bar 3: Bright Blue -->
+            <rect x="98" y="44" width="22" height="60" rx="4" fill="#6BB8F5" stroke="#171717" stroke-width="2"/>
+            <!-- Bar 4: Warm Yellow -->
+            <rect x="130" y="62" width="22" height="42" rx="4" fill="#FFD86A" stroke="#171717" stroke-width="2"/>
+            
+            <!-- Trend Line with Data Nodes -->
+            <path d="M45 70 L77 52 L109 38 L141 58" stroke="#171717" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="45" cy="70" r="3.5" fill="#FFFFFF" stroke="#171717" stroke-width="1.8"/>
+            <circle cx="77" cy="52" r="3.5" fill="#FFFFFF" stroke="#171717" stroke-width="1.8"/>
+            <circle cx="109" cy="38" r="3.5" fill="#FFFFFF" stroke="#171717" stroke-width="1.8"/>
+            <circle cx="141" cy="58" r="3.5" fill="#FFFFFF" stroke="#171717" stroke-width="1.8"/>
+          </svg>
+        </div>
+
+        <!-- 2. Creative Lightbulb / Network Idea -->
+        <div class="decor-item anim-float-1" style="margin: 10px 10px 10px 0;">
+          <svg class="decor-svg" viewBox="0 0 160 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Shadow -->
+            <ellipse cx="83" cy="55" rx="30" ry="30" fill="#171717"/>
+            <!-- Bulb Body -->
+            <path d="M62 48 C56 38 60 22 75 16 C90 10 106 18 108 34 C110 44 102 52 98 62 L68 62 C64 56 65 52 62 48 Z" 
+                  fill="#FFD86A" stroke="#171717" stroke-width="2.5" stroke-linejoin="round"/>
+            
+            <!-- Looped Filament inside -->
+            <path d="M74 52 L78 38 C80 34 86 34 88 38 L92 52" stroke="#171717" stroke-width="2" stroke-linecap="round" fill="none"/>
+            
+            <!-- Screw Base -->
+            <rect x="70" y="64" width="26" height="7" rx="2" fill="#BFA7F2" stroke="#171717" stroke-width="2"/>
+            <rect x="72" y="73" width="22" height="6" rx="2" fill="#BFA7F2" stroke="#171717" stroke-width="2"/>
+            <circle cx="83" cy="83" r="4" fill="#171717"/>
+            
+            <!-- Radiating Energy Rays & Sparkles -->
+            <line x1="83" y1="4" x2="83" y2="10" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="116" y1="18" x2="111" y2="23" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="50" y1="18" x2="55" y2="23" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="124" y1="48" x2="118" y2="48" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="42" y1="48" x2="48" y2="48" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            
+            <!-- Decorative Mini Star -->
+            <path d="M120 70 L123 62 L131 59 L123 56 L120 48 L117 56 L109 59 L117 62 Z" fill="#F7A8C4" stroke="#171717" stroke-width="1.5"/>
+          </svg>
+        </div>
+
+        <!-- 3. Connection Lines & Data Flow -->
+        <div class="decor-item anim-float-3">
+          <svg class="decor-svg" viewBox="0 0 175 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Shadow -->
+            <rect x="20" y="16" width="140" height="78" rx="12" fill="#171717"/>
+            <!-- Card -->
+            <rect x="16" y="12" width="140" height="78" rx="12" fill="#FFF7E8" stroke="#171717" stroke-width="2.5"/>
+            
+            <!-- Connection Bus Paths -->
+            <path d="M30 40 L60 40 L85 64 L138 64" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M30 64 L52 64 L74 40 L138 40" stroke="#171717" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 3"/>
+            
+            <!-- Node Points -->
+            <circle cx="30" cy="40" r="5" fill="#6BB8F5" stroke="#171717" stroke-width="2"/>
+            <circle cx="30" cy="64" r="5" fill="#FFD86A" stroke="#171717" stroke-width="2"/>
+            <circle cx="138" cy="40" r="5" fill="#F7A8C4" stroke="#171717" stroke-width="2"/>
+            <circle cx="138" cy="64" r="5" fill="#BFA7F2" stroke="#171717" stroke-width="2"/>
+            
+            <!-- Stream Label -->
+            <rect x="58" y="74" width="60" height="15" rx="5" fill="#6BB8F5" stroke="#171717" stroke-width="1.5"/>
+            <text x="64" y="84" font-family="'Inter', sans-serif" font-size="7" font-weight="800" fill="#171717">DATA STREAM</text>
+          </svg>
+        </div>
+
+        <!-- Small Floating Doodles (Right) -->
+        <span class="decor-doodle decor-doodle-sparkle anim-sparkle" style="top: 14%; left: -18px; font-size: 24px; color: #BFA7F2;">✦</span>
+        <span class="decor-doodle decor-doodle-plus" style="top: 52%; right: 6px;">+</span>
+        <span class="decor-doodle decor-doodle-plus" style="bottom: 10%; left: -14px; font-size: 22px;">+</span>
+        <div class="decor-doodle decor-doodle-ring" style="width: 12px; height: 12px; top: 78%; right: -4px; background: #F7A8C4;"></div>
+
+      </div><!-- /.decor-flank-right -->
+
+    </div><!-- /.auth-decor-frame -->
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         RIGHT — Registration Form
+    ═══════════════════════════════════════════════════════════════════ -->
+    <div class="form-panel">
+      <div class="form-container">
+
+        <div class="card">
+          <h1 class="card-heading">Create Account</h1>
+          <p class="card-subheading">Create your account and start monitoring your network.</p>
+
+          <!-- Accent line -->
+          <div class="heading-accent" aria-hidden="true">
+            <span class="accent-blue"></span>
+            <span class="accent-yellow"></span>
+          </div>
+
+          <!-- Flash messages -->
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <ul class="flash-list" role="alert">
+                {% for category, message in messages %}
+                  <li class="flash-msg {{ category }}">
+                    {% if category == 'success' %}
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                      </svg>
+                    {% else %}
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="12" />
+                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                      </svg>
+                    {% endif %}
+                    {{ message }}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
+
+          <!-- Registration Form — same method, action, field names -->
+          <form id="register-form" method="POST" action="{{ url_for('register') }}" novalidate>
+
+            <!-- Full Name -->
+            <div class="form-group">
+              <label class="form-label" for="full_name">Full Name</label>
+              <div class="input-wrapper">
+                <span class="input-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </span>
+                <input
+                  id="full_name"
+                  class="form-input"
+                  type="text"
+                  name="full_name"
+                  placeholder="e.g. Jane Smith"
+                  required
+                  autocomplete="name"
+                  value="{{ request.form.get('full_name', '') }}"
+                />
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label class="form-label" for="email">Email Address</label>
+              <div class="input-wrapper">
+                <span class="input-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </span>
+                <input
+                  id="email"
+                  class="form-input"
+                  type="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  required
+                  autocomplete="email"
+                  value="{{ request.form.get('email', '') }}"
+                />
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+              <label class="form-label" for="password">Password</label>
+              <div class="input-wrapper">
+                <span class="input-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </span>
+                <input
+                  id="password"
+                  class="form-input"
+                  type="password"
+                  name="password"
+                  placeholder="Minimum 6 characters"
+                  required
+                  autocomplete="new-password"
+                />
+                <button type="button" class="password-toggle" onclick="togglePassword('password', this)" aria-label="Toggle password visibility">
+                  <svg class="eye-open" viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <svg class="eye-closed" viewBox="0 0 24 24" style="display:none">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                    <line x1="1" y1="1" x2="23" y2="23" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+              <label class="form-label" for="confirm_password">Confirm Password</label>
+              <div class="input-wrapper">
+                <span class="input-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </span>
+                <input
+                  id="confirm_password"
+                  class="form-input"
+                  type="password"
+                  name="confirm_password"
+                  placeholder="Re-enter your password"
+                  required
+                  autocomplete="new-password"
+                />
+                <button type="button" class="password-toggle" onclick="togglePassword('confirm_password', this)" aria-label="Toggle password visibility">
+                  <svg class="eye-open" viewBox="0 0 24 24">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <svg class="eye-closed" viewBox="0 0 24 24" style="display:none">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                    <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                    <line x1="1" y1="1" x2="23" y2="23" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Submit — same id, same type -->
+            <button id="register-btn" class="btn-primary" type="submit">
+              Create Account
+            </button>
+
+          </form>
+
+          <!-- Divider -->
+          <div class="divider">or</div>
+
+          <!-- Login link — same url_for('login') -->
+          <p class="login-link-row">
+            Already have an account?
+            <a id="login-link" href="{{ url_for('login') }}">Sign in</a>
+          </p>
+
+        </div><!-- /.card -->
+
+        <p class="footer-note">BSc IT Project &mdash; Network Performance Monitoring Dashboard</p>
+
+      </div><!-- /.form-container -->
+    </div><!-- /.form-panel -->
+
+  </div><!-- /.auth-layout -->
+
+  <!-- Password visibility toggle script (UI-only) -->
+  <script>
+    function togglePassword(inputId, btn) {
+      var input = document.getElementById(inputId);
+      var eyeOpen = btn.querySelector('.eye-open');
+      var eyeClosed = btn.querySelector('.eye-closed');
+      if (input.type === 'password') {
+        input.type = 'text';
+        eyeOpen.style.display = 'none';
+        eyeClosed.style.display = 'block';
+      } else {
+        input.type = 'password';
+        eyeOpen.style.display = 'block';
+        eyeClosed.style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+flask
+psycopg2-binary
+werkzeug
+psutil
+
+
+
+# PostgreSQL Terminal Guide
+
+This guide explains how to inspect the project's PostgreSQL database using PowerShell / Windows Terminal.
+
+## Before you start
+
+- Install and start Docker Desktop.
+- Open PowerShell in the project folder that contains `docker-compose.yml`.
+- Create your own `.env` file from `.env.example` if the project provides one.
+- Set a private database password in `.env`. Never upload `.env` to GitHub.
+
+## 1. Start the project
+
+```powershell
+docker compose up -d --build
+docker compose ps
+```
+
+## 2. Open the PostgreSQL terminal
+
+Run this from the project folder:
+
+```powershell
+docker compose exec db psql -U postgres -d network_monitoring
+```
+
+You are now inside `psql`. Run the commands below there, one at a time.
+
+## 3. Helpful `psql` commands
+
+| Command | What it does |
+|---|---|
+| `\l` | Lists databases |
+| `\dt` | Lists tables in the current database |
+| `\d users` | Shows the `users` table structure |
+| `\d device_metrics` | Shows the `device_metrics` table structure |
+| `\q` | Exits PostgreSQL and returns to PowerShell |
+
+## 4. Run SQL queries
+
+Count users:
+
+```sql
+SELECT COUNT(*) FROM users;
+```
+
+Count saved device metrics:
+
+```sql
+SELECT COUNT(*) FROM device_metrics;
+```
+
+Show recent metric records (column names can vary by project version):
+
+```sql
+SELECT *
+FROM device_metrics
+ORDER BY id DESC
+LIMIT 20;
+```
+
+To inspect the actual columns in a table, run `\d table_name` inside `psql`.
+
+**Tip:** SQL statements normally end with a semicolon (`;`). Commands such as `\dt` are `psql` commands and do not need a semicolon.
+
+## 5. Run a query directly from PowerShell
+
+You do not need to enter the interactive PostgreSQL prompt for a quick query:
+
+```powershell
+docker compose exec db psql -U postgres -d network_monitoring -c "SELECT COUNT(*) FROM device_metrics;"
+```
+
+## 6. Check database status and logs
+
+```powershell
+docker compose ps db
+docker compose logs --tail 100 db
+```
+
+Follow live database logs; press `Ctrl+C` to stop viewing them:
+
+```powershell
+docker compose logs -f db
+```
+
+## 7. Optional: connect with pgAdmin or DBeaver
+
+For a connection from the same laptop, use these values if they match your Compose configuration:
+
+- **Host:** `127.0.0.1`
+- **Port:** `5433`
+- **Database:** `network_monitoring`
+- **Username:** `postgres`
+- **Password:** the value configured in your local `.env`
+
+If the connection fails, check the port mapping and database credentials in `docker-compose.yml` and `.env`.
+
+Do not expose PostgreSQL directly to the public internet.
+
+## 8. Stop the project
+
+Stop containers while keeping database data:
+
+```powershell
+docker compose down
+```
+
+**Warning:** This command removes the Compose database volume and its stored data:
+
+```powershell
+docker compose down -v
+```
+
+Only use it if you intentionally want to delete the local database data.
+
+

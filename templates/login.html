@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sign in to NetMonitor." />
+  <title>Sign In | NetMonitor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <div class="auth-layout">
+    <!-- ═══════════════════════════════════════════════════════════════════
+         BACKGROUND DECORATIONS (Framing the centered form)
+    ═══════════════════════════════════════════════════════════════════ -->
+    <div class="auth-decor-frame" aria-hidden="true">
+
+      <!-- LEFT FLANK -->
+      <div class="decor-flank decor-flank-left">
+
+        <!-- 1. Network Mesh Nodes -->
+        <div class="decor-item anim-float-2">
+          <svg class="decor-svg" viewBox="0 0 180 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Interconnecting lines -->
+            <line x1="88" y1="32" x2="36" y2="82" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="88" y1="32" x2="146" y2="78" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="36" y1="82" x2="146" y2="78" stroke="#171717" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+            
+            <!-- Top Node (Bright Blue) -->
+            <circle cx="91" cy="35" r="16" fill="#171717"/>
+            <circle cx="88" cy="32" r="16" fill="#6BB8F5" stroke="#171717" stroke-width="2.5"/>
+            <circle cx="88" cy="32" r="6" fill="#FFFFFF" stroke="#171717" stroke-width="1.8"/>
+
+            <!-- Bottom Left Node (Lavender) -->
+            <circle cx="39" cy="85" r="15" fill="#171717"/>
+            <circle cx="36" cy="82" r="15" fill="#BFA7F2" stroke="#171717" stroke-width="2.5"/>
+            <circle cx="36" cy="82" r="5" fill="#FFFFFF" stroke="#171717" stroke-width="1.8"/>
+
+            <!-- Bottom Right Node (Soft Pink) -->
+            <circle cx="149" cy="81" r="15" fill="#171717"/>
+            <circle cx="146" cy="78" r="15" fill="#F7A8C4" stroke="#171717" stroke-width="2.5"/>
+            <circle cx="146" cy="78" r="5" fill="#FFD86A" stroke="#171717" stroke-width="1.8"/>
+
+            <!-- Moving packet pulse -->
+            <circle cx="62" cy="57" r="3.5" fill="#FFD86A" stroke="#171717" stroke-width="1.2"/>
+            <circle cx="117" cy="55" r="3.5" fill="#B8F0D8" stroke="#171717" stroke-width="1.2"/>
+          </svg>
+        </div>
+
+        <!-- 2. Modular Server Stack with Curvy Cable -->
+        <div class="decor-item anim-float-1" style="margin: 8px 0 8px 6px;">
+          <svg class="decor-svg" viewBox="0 0 190 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Server Tower Drop Shadow -->
+            <rect x="29" y="16" width="128" height="122" rx="12" fill="#171717"/>
+            <!-- Server Tower Chassis -->
+            <rect x="25" y="12" width="128" height="122" rx="12" fill="#FFFFFF" stroke="#171717" stroke-width="2.5"/>
+            
+            <!-- Tier 1: Blue Unit -->
+            <rect x="33" y="20" width="112" height="32" rx="6" fill="#6BB8F5" stroke="#171717" stroke-width="2"/>
+            <!-- Vents -->
+            <line x1="41" y1="36" x2="62" y2="36" stroke="#171717" stroke-width="2" stroke-linecap="round"/>
+            <line x1="68" y1="36" x2="89" y2="36" stroke="#171717" stroke-width="2" stroke-linecap="round"/>
+            <!-- Status LEDs -->
+            <circle cx="108" cy="36" r="3" fill="#B8F0D8" stroke="#171717" stroke-width="1.2"/>
+            <circle cx="118" cy="36" r="3" fill="#FFD86A" stroke="#171717" stroke-width="1.2"/>
+            <circle cx="128" cy="36" r="3" fill="#FFFFFF" stroke="#171717" stroke-width="1.2"/>
+            <text x="41" y="29" font-family="'Inter', sans-serif" font-size="6" font-weight="800" fill="#171717">SRV-01</text>
+
+            <!-- Tier 2: Lavender Unit -->
+            <rect x="33" y="58" width="112" height="32" rx="6" fill="#BFA7F2" stroke="#171717" stroke-width="2"/>
+            <!-- Drive Bay Slots -->
+            <rect x="41" y="65" width="24" height="18" rx="3" fill="#FFFFFF" stroke="#171717" stroke-width="1.5"/>
+            <rect x="70" y="65" width="24" height="18" rx="3" fill="#FFFFFF" stroke="#171717" stroke-width="1.5"/>
+            <!-- Status LEDs -->
+            <circle cx="108" cy="74" r="3" fill="#B8F0D8" stroke="#171717" stroke-width="1.2"/>
+            <circle cx="118" cy="74" r="3" fill="#F7A8C4" stroke="#171717" stroke-width="1.2"/>
+            <circle cx="128" cy="74" r="3" fill="#FFFFFF" stroke="#171717" stroke-width="1.2"/>
+
+            <!-- Tier 3: Soft Pink / Gateway Unit -->
+            <rect x="33" y="96" width="112" height="32" rx="6" fill="#F7A8C4" stroke="#171717" stroke-width="2"/>
+            <!-- Ports -->
+            <rect x="41" y="105" width="14" height="12" rx="2" fill="#FFFFFF" stroke="#171717" stroke-width="1.5"/>
+            <rect x="60" y="105" width="14" height="12" rx="2" fill="#FFFFFF" stroke="#171717" stroke-width="1.5"/>
+            <rect x="79" y="105" width="14" height="12" rx="2" fill="#FFFFFF" stroke="#171717" stroke-width="1.5"/>
+            <!-- LEDs -->
+            <circle cx="108" cy="112" r="3" fill="#B8F0D8" stroke="#171717" stroke-width="1.2"/>
+            <circle cx="118" cy="112" r="3" fill="#B8F0D8" stroke="#171717" stroke-width="1.2"/>
+            <circle cx="128" cy="112" r="3" fill="#6BB8F5" stroke="#171717" stroke-width="1.2"/>
+
+            <!-- Curvy Network Cable coming from Gateway -->
+            <path d="M93 117 C125 125 142 144 120 155 C102 163 76 150 62 158" 
+                  stroke="#171717" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <!-- RJ45 Plug Head -->
+            <rect x="52" y="152" width="14" height="10" rx="3" fill="#FFD86A" stroke="#171717" stroke-width="1.8"/>
+            <circle cx="56" cy="157" r="1.5" fill="#171717"/>
+          </svg>
+        </div>
+
+        <!-- 3. WiFi Waves & Signal Tower -->
+        <div class="decor-item anim-float-3">
+          <svg class="decor-svg" viewBox="0 0 160 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Shadow -->
+            <rect x="22" y="16" width="116" height="80" rx="14" fill="#171717"/>
+            <!-- Badge Card -->
+            <rect x="18" y="12" width="116" height="80" rx="14" fill="#FFF7E8" stroke="#171717" stroke-width="2.5"/>
+            
+            <!-- Transmitter Tower Mast -->
+            <line x1="56" y1="78" x2="68" y2="44" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="80" y1="78" x2="68" y2="44" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="61" y1="64" x2="75" y2="64" stroke="#171717" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="68" cy="44" r="5" fill="#FFD86A" stroke="#171717" stroke-width="2"/>
+
+            <!-- Radiating Waves (Blue, Yellow, Pink) -->
+            <path d="M80 34 C88 40 88 48 80 54" stroke="#6BB8F5" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M90 28 C102 38 102 54 90 64" stroke="#FFD86A" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M100 22 C116 36 116 60 100 74" stroke="#F7A8C4" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+            <!-- Status Pill: Online -->
+            <rect x="28" y="20" width="44" height="14" rx="5" fill="#B8F0D8" stroke="#171717" stroke-width="1.5"/>
+            <circle cx="34" cy="27" r="2.5" fill="#171717"/>
+            <text x="40" y="30" font-family="'Inter', sans-serif" font-size="6.5" font-weight="800" fill="#171717">ONLINE</text>
+          </svg>
+        </div>
+
+        <!-- Small Floating Doodles (Left) -->
+        <span class="decor-doodle decor-doodle-sparkle anim-sparkle" style="top: 6%; right: -12px; font-size: 26px;">✦</span>
+        <span class="decor-doodle decor-doodle-plus" style="top: 42%; left: -6px;">+</span>
+        <span class="decor-doodle decor-doodle-plus" style="bottom: 8%; right: -10px; font-size: 20px;">+</span>
+        <div class="decor-doodle decor-doodle-ring" style="width: 14px; height: 14px; top: 62%; left: -8px; background: #BFA7F2;"></div>
+
+      </div><!-- /.decor-flank-left -->
+
+
+      <!-- RIGHT FLANK -->
+      <div class="decor-flank decor-flank-right">
+
+        <!-- 1. Small Monitor Console with Waveform -->
+        <div class="decor-item anim-float-1">
+          <svg class="decor-svg" viewBox="0 0 185 145" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Monitor Casing Shadow -->
+            <rect x="24" y="14" width="138" height="92" rx="12" fill="#171717"/>
+            <!-- Monitor Casing -->
+            <rect x="20" y="10" width="138" height="92" rx="12" fill="#FFFFFF" stroke="#171717" stroke-width="2.5"/>
+            
+            <!-- Screen Bezel -->
+            <rect x="28" y="18" width="122" height="74" rx="8" fill="#BFA7F2" stroke="#171717" stroke-width="2"/>
+            <!-- Active Display Area -->
+            <rect x="34" y="24" width="110" height="62" rx="5" fill="#6BB8F5" stroke="#171717" stroke-width="1.8"/>
+            
+            <!-- Sine Waveform Network Stream -->
+            <path d="M38 55 C48 35 56 75 68 50 C80 32 88 68 100 48 C112 36 122 62 134 50 L140 50" 
+                  fill="none" stroke="#171717" stroke-width="2.5" stroke-linecap="round"/>
+            
+            <!-- Wave Accent Fill underneath -->
+            <path d="M38 55 C48 35 56 75 68 50 C80 32 88 68 100 48 C112 36 122 62 134 50 L140 50 L140 82 L38 82 Z" 
+                  fill="#F7A8C4" fill-opacity="0.35"/>
+
+            <!-- Header Badge -->
+            <rect x="38" y="28" width="46" height="12" rx="3" fill="#FFF7E8" stroke="#171717" stroke-width="1.2"/>
+            <text x="42" y="37" font-family="'Inter', sans-serif" font-size="6.5" font-weight="800" fill="#171717">NET LIVE</text>
+
+            <!-- Monitor Neck & Stand -->
+            <rect x="83" y="102" width="16" height="14" fill="#FFD86A" stroke="#171717" stroke-width="2"/>
+            <ellipse cx="91" cy="119" rx="34" ry="9" fill="#171717"/>
+            <ellipse cx="89" cy="116" rx="34" ry="9" fill="#FFFFFF" stroke="#171717" stroke-width="2.5"/>
+          </svg>
+        </div>
+
+        <!-- 2. Analytics Donut Chart / Bandwidth Gauge -->
+        <div class="decor-item anim-float-3" style="margin: 6px 6px 6px 0;">
+          <svg class="decor-svg" viewBox="0 0 170 125" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Card Shadow -->
+            <rect x="18" y="14" width="134" height="98" rx="14" fill="#171717"/>
+            <!-- Card Body -->
+            <rect x="14" y="10" width="134" height="98" rx="14" fill="#FFFFFF" stroke="#171717" stroke-width="2.5"/>
+            
+            <!-- Gauge Donut Arc Segments -->
+            <!-- Blue Segment -->
+            <circle cx="58" cy="58" r="28" stroke="#6BB8F5" stroke-width="10" fill="none" 
+                    stroke-dasharray="70 180" stroke-dashoffset="0" stroke-linecap="round"/>
+            <!-- Yellow Segment -->
+            <circle cx="58" cy="58" r="28" stroke="#FFD86A" stroke-width="10" fill="none" 
+                    stroke-dasharray="55 180" stroke-dashoffset="-75" stroke-linecap="round"/>
+            <!-- Pink Segment -->
+            <circle cx="58" cy="58" r="28" stroke="#F7A8C4" stroke-width="10" fill="none" 
+                    stroke-dasharray="35 180" stroke-dashoffset="-135" stroke-linecap="round"/>
+            <!-- Center Hole Outline -->
+            <circle cx="58" cy="58" r="22" stroke="#171717" stroke-width="2" fill="#FFF7E8"/>
+            <circle cx="58" cy="58" r="34" stroke="#171717" stroke-width="2" fill="none"/>
+            <circle cx="58" cy="58" r="4" fill="#171717"/>
+
+            <!-- Metric readout on the right -->
+            <text x="96" y="42" font-family="'Inter', sans-serif" font-size="7" font-weight="700" fill="#6B7280">THROUGHPUT</text>
+            <text x="96" y="58" font-family="'Inter', sans-serif" font-size="13" font-weight="900" fill="#171717">1.2G</text>
+            <!-- Trend Pill -->
+            <rect x="96" y="68" width="44" height="15" rx="5" fill="#B8F0D8" stroke="#171717" stroke-width="1.5"/>
+            <text x="101" y="78" font-family="'Inter', sans-serif" font-size="6.5" font-weight="800" fill="#171717">↑ FAST</text>
+          </svg>
+        </div>
+
+        <!-- 3. Playful Paper Airplane with Flight Trail -->
+        <div class="decor-item anim-float-2">
+          <svg class="decor-svg" viewBox="0 0 180 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Dashed Loop-de-loop Flight Trail -->
+            <path d="M15 88 C45 92 65 65 48 50 C32 36 28 68 70 65 C85 64 96 52 110 54" 
+                  stroke="#171717" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="5 4" fill="none"/>
+            
+            <!-- Paper Airplane Shadow -->
+            <polygon points="106,44 162,26 128,72" fill="#171717"/>
+
+            <!-- Folded Paper Airplane Body -->
+            <!-- Left Upper Wing (Bright Blue) -->
+            <polygon points="102,40 158,22 130,48" fill="#6BB8F5" stroke="#171717" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Right Wing / Top Facet (Warm Yellow) -->
+            <polygon points="102,40 158,22 152,14" fill="#FFD86A" stroke="#171717" stroke-width="2" stroke-linejoin="round"/>
+            <!-- Center Keel / Underside (Lavender) -->
+            <polygon points="130,48 158,22 124,68" fill="#BFA7F2" stroke="#171717" stroke-width="2.5" stroke-linejoin="round"/>
+
+            <!-- Sparkle Burst from Plane Tip -->
+            <path d="M166 16 L169 9 L176 6 L169 3 L166 -4 L163 3 L156 6 L163 9 Z" fill="#FFD86A" stroke="#171717" stroke-width="1.5"/>
+            <circle cx="152" cy="36" r="2.5" fill="#F7A8C4" stroke="#171717" stroke-width="1.2"/>
+          </svg>
+        </div>
+
+        <!-- Small Floating Doodles (Right) -->
+        <span class="decor-doodle decor-doodle-sparkle anim-sparkle" style="top: 10%; left: -16px; font-size: 24px; color: #F7A8C4;">✦</span>
+        <span class="decor-doodle decor-doodle-plus" style="top: 48%; right: -2px;">+</span>
+        <span class="decor-doodle decor-doodle-plus" style="bottom: 12%; left: -14px; font-size: 22px;">+</span>
+        <div class="decor-doodle decor-doodle-ring" style="width: 12px; height: 12px; top: 76%; right: -4px; background: #6BB8F5;"></div>
+
+      </div><!-- /.decor-flank-right -->
+
+    </div><!-- /.auth-decor-frame -->
+    <main class="form-panel"><div class="form-container"><div class="card">
+      <h1 class="card-heading">Welcome back</h1><p class="card-subheading">Sign in to keep an eye on your network.</p><div class="heading-accent" aria-hidden="true"><span class="accent-blue"></span><span class="accent-yellow"></span></div>
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<ul class="flash-list" role="alert">{% for category, message in messages %}<li class="flash-msg {{ category }}"><svg viewBox="0 0 24 24" aria-hidden="true">{% if category == 'success' %}<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />{% else %}<circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />{% endif %}</svg>{{ message }}</li>{% endfor %}</ul>{% endif %}{% endwith %}
+      <form id="login-form" method="POST" action="{{ url_for('login') }}" novalidate>
+        <div class="form-group"><label class="form-label" for="login_email">Email Address</label><div class="input-wrapper"><span class="input-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg></span><input id="login_email" class="form-input" type="email" name="email" placeholder="you@example.com" required autocomplete="email" value="{{ request.form.get('email', '') }}" /></div></div>
+        <div class="form-group"><label class="form-label" for="login_password">Password</label><div class="input-wrapper"><span class="input-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg></span><input id="login_password" class="form-input" type="password" name="password" placeholder="Your password" required autocomplete="current-password" /></div></div>
+        <button id="login-btn" class="btn-primary" type="submit">Sign In</button>
+      </form><div class="divider">or</div><p class="login-link-row">New to NetMonitor? <a id="register-link" href="{{ url_for('register') }}">Create an account</a></p>
+    </div><p class="footer-note">BSc IT Project · Network Performance Monitoring Dashboard</p></div></main>
+  </div>
+</body>
+</html>
