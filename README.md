@@ -378,6 +378,3 @@ To share records, use an approved shared database or a sanitized sample-data/bac
 - Do not expose PostgreSQL directly to the public internet.
 - Use simulated metrics only as demo data unless real monitoring agents have been configured.
 
-## License
-
-Add a `LICENSE` file if you want to specify how others may use, modify, and distribute this project.
